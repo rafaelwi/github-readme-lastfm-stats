@@ -1,6 +1,8 @@
 package main
 
 import (
+	"github.com/rafaelwi/github-readme-lastfm-stats/fetcher"
+
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )
@@ -16,7 +18,8 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
-		Body:       res,
+		Headers:    map[string]string{"Content-Type": "image/svg+xml"},
+		Body:       fetcher.SendTestResponse(),
 	}, nil
 }
 
