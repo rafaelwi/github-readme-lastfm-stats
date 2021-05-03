@@ -1,6 +1,6 @@
 [build]
   command = "make deploy"
-  functions = "functions"
+  functions = "api"
   publish = "site"
 [build.environment]
   GO_IMPORT_PATH = "github.com/rafaelwi/github-readme-lastfm-stats"

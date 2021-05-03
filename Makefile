@@ -1,4 +1,4 @@
 deploy:
-	mkdir -p functions
+	mkdir -p api
 	go get ./...
-	go build -o functions/card src/card.go
+	go build -o api/card src/card.go
