@@ -1,6 +1,7 @@
 [functions]
   directory = "api"
 [build]
+  command = "make deploy"
   functions = "api"
   publish = "site"
 [build.environment]
