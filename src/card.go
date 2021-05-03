@@ -6,9 +6,17 @@ import (
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	// Get user's name
+	res := "Hello github-readme-lastfm-stats "
+	if user, userOk := request.QueryStringParameters["user"]; userOk {
+		res += "User " + user
+	} else {
+		res += "No user given"
+	}
+
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
-		Body:       "Hello github-readme-lastfm-stats",
+		Body:       res,
 	}, nil
 }
 
