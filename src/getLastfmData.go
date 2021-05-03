@@ -18,7 +18,7 @@ type LastfmData struct {
 	IsError  bool
 }
 
-func main() {
+func test() {
 	user := "st-silver"
 	apiKey := "ed6f93aff07a748849612cdea67dbc81"
 	url := fmt.Sprintf("https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=%s&limit=1&api_key=%s&format=json", user, apiKey)
