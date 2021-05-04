@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	fetcher "github.com/rafaelwi/github-readme-lastfm-stats"
+	"github.com/rafaelwi/github-readme-lastfm-stats/src/fetcher"
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
