@@ -20,27 +20,27 @@ type LastfmData struct {
 
 func SendTestResponse() string {
 	const res = `
-    <style>
-        .header {
-            font: 600 20px 'Segoe UI', Ubuntu, Sans-Serif;
-            fill: #1e2e42;
-        }
-
-        .song {
-            font: 500 18px 'Segoe UI', Ubuntu, Sans-Serif;
-        }
-
-        .artist {
-            font: 400 18px 'Segoe UI', Ubuntu, Sans-Serif;
-        }
-
-        .project {
-            font: 14px 'Segoe UI', Ubuntu, Sans-Serif;
-            font-variant: small-caps;
-            font-style: italic;
-        }
-    </style>
     <svg width="440" height="120" viewBox="0 0 440 120">
+        <style>
+            .header {
+                font: 600 20px 'Segoe UI', Ubuntu, Sans-Serif;
+                fill: #1e2e42;
+            }
+
+            .song {
+                font: 500 18px 'Segoe UI', Ubuntu, Sans-Serif;
+            }
+
+            .artist {
+                font: 400 18px 'Segoe UI', Ubuntu, Sans-Serif;
+            }
+
+            .project {
+                font: 14px 'Segoe UI', Ubuntu, Sans-Serif;
+                font-variant: small-caps;
+                font-style: italic;
+            }
+        </style>
         <rect x="0" y="0" width="440" height="120" rx="5" fill="#fffefe" stroke="#e4e2e2" stroke-width="5"/>
         <image href="https://lastfm.freetls.fastly.net/i/u/174s/478be8d73bdf783c89b709ebe7544180.jpg" width="120" height="120"/>
         <g id="card-text">
