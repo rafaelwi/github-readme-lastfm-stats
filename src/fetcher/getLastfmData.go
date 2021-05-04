@@ -20,7 +20,7 @@ type LastfmData struct {
 
 func SendTestResponse() string {
 	const res = `
-    <svg width="440" height="120" viewBox="0 0 440 120">
+    <svg xmlns="http://www.w3.org/2000/svg" width="440" height="120" viewBox="0 0 440 120">
         <style>
             .header {
                 font: 600 20px 'Segoe UI', Ubuntu, Sans-Serif;
