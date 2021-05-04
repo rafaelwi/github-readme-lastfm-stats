@@ -18,7 +18,7 @@ type LastfmData struct {
 	IsError  bool
 }
 
-func SendTestResponse() {
+func SendTestResponse() string {
 	const res = `
 	<style>
 	.header {
@@ -53,6 +53,7 @@ func SendTestResponse() {
 		</g>
 	</svg>
 	`
+	return res
 }
 
 func GetLastfmData() {

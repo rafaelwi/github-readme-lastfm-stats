@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github-readme-lastfm-stats/fetcher"
+	"github.com/rafaelwi/github-readme-lastfm-stats/fetcher"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"

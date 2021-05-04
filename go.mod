@@ -1,4 +1,4 @@
-module github-readme-lastfm-stats
+module github.com/rafaelwi/github-readme-lastfm-stats
 
 go 1.16
 
