@@ -25,7 +25,7 @@ func SendTestResponse() string {
         <text id="header" x="135" y="35">Currently Listening To:</text>
         <text id="song" x="145" y="60">Primetime</text>
         <text id="artist" x="145" y="85">JAY-Z</text>
-        <a href="https://github.com/rafaelwi/github-readme-lastfm-stats" target="_blank">text id="project" x="124" y="115">github.com/rafaelwi/github-readme-lastfm-stats</text></a>
+        <a href="https://github.com/rafaelwi/github-readme-lastfm-stats" target="_blank"><text id="project" x="124" y="115">github.com/rafaelwi/github-readme-lastfm-stats</text></a>
     </svg>
     `
 	return data
