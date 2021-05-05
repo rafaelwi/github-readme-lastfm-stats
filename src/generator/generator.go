@@ -37,8 +37,8 @@ func generateCardBody(data fetcher.LastfmData, showScrobbles bool) string {
 	body := "<rect id=\"card\" width=\"440\" height=\"120\" rx=\"5\"/>" +
 		"<image href=\"" + data.AlbumArt + "\" width=\"120\" height=\"120\"/>" +
 		"<text id=\"header\" x=\"135\" y=\"35\">Currently Listening To:</text>" +
-		"<text id=\"song\" x=\"145\" y=\"60\">" + data.Song + "</text>" +
-		"<text id=\"artist\" x=\"145\" y=\"85\">" + data.Artist + "</text>"
+		"<text id=\"song\" x=\"145\" y=\"55\">" + data.Song + "</text>" +
+		"<text id=\"artist\" x=\"145\" y=\"75\">" + data.Artist + "</text>"
 
 	if showScrobbles {
 		body += "<text id=\"scrobbles\" x=\"145\" y=\"95\">" + data.Scrobbles + "</text>"

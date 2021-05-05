@@ -21,7 +21,11 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	showScrobblesParam, ssOk := request.QueryStringParameters["show_scrobbles"]
 
 	if ssOk {
-		showScrobbles, _ = strconv.ParseBool(showScrobblesParam)
+		var err error
+		showScrobbles, err = strconv.ParseBool(showScrobblesParam)
+		if err != nil {
+			showScrobbles = false
+		}
 	}
 
 	if !themeOk {
