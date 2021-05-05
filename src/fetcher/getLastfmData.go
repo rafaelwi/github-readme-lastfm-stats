@@ -1,7 +1,6 @@
 package fetcher
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -15,50 +14,27 @@ type LastfmData struct {
 	Artist   string
 	Album    string
 	AlbumArt string
-	IsError  bool
 }
 
 func SendTestResponse() string {
-	const res = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="440" height="120" viewBox="0 0 440 120">
-        <style>
-            .header {
-                font: 600 20px 'Segoe UI', Ubuntu, Sans-Serif;
-                fill: #1e2e42;
-            }
-
-            .song {
-                font: 500 18px 'Segoe UI', Ubuntu, Sans-Serif;
-            }
-
-            .artist {
-                font: 400 18px 'Segoe UI', Ubuntu, Sans-Serif;
-            }
-
-            .project {
-                font: 14px 'Segoe UI', Ubuntu, Sans-Serif;
-                font-variant: small-caps;
-                font-style: italic;
-            }
-        </style>
-        <rect x="0" y="0" width="440" height="120" rx="5" fill="#fffefe" stroke="#e4e2e2" stroke-width="5"/>
+	const data = `
+    <svg viewBox="0 0 440 120" xmlns="http://www.w3.org/2000/svg">
+        <style>#header{font:600 20px 'Segoe UI',Ubuntu,Sans-Serif;fill:#1e2e42}#song{font:500 18px 'Segoe UI',Ubuntu,Sans-Serif}#artist{font:400 18px 'Segoe UI',Ubuntu,Sans-Serif}#project{font:14px 'Segoe UI',Ubuntu,Sans-Serif;font-variant:small-caps;font-style:italic}</style>
+        <rect width="440" height="120" rx="5" fill="#fffefe" stroke="#e4e2e2" stroke-width="5"/>
         <image href="https://lastfm.freetls.fastly.net/i/u/174s/478be8d73bdf783c89b709ebe7544180.jpg" width="120" height="120"/>
-        <g id="card-text">
-            <text class="header"  x="135" y="35">Currently Listening To:</text>
-            <text class="song"    x="145" y="60">Primetime</text>
-            <text class="artist"  x="145" y="85">JAY-Z</text>
-            <a href="https://github.com/rafaelwi/github-readme-lastfm-stats" target="_blank">
-                <text class="project" x="124" y="115">github.com/rafaelwi/github-readme-lastfm-stats</text>
-            </a>
-        </g>
+        <text id="header" x="135" y="35">Currently Listening To:</text>
+        <text id="song" x="145" y="60">Primetime</text>
+        <text id="artist" x="145" y="85">JAY-Z</text>
+        <a href="https://github.com/rafaelwi/github-readme-lastfm-stats" target="_blank">text id="project" x="124" y="115">github.com/rafaelwi/github-readme-lastfm-stats</text>
+        </a>
     </svg>
     `
-	return res
+	return data
 }
 
-func GetLastfmData() {
-	user := "st-silver"
-	apiKey := "ed6f93aff07a748849612cdea67dbc81"
+func GetLastfmData(user string, apiKey string) (LastfmData, error) {
+	var data LastfmData
+	var result map[string]interface{}
 	url := fmt.Sprintf("https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=%s&limit=1&api_key=%s&format=json", user, apiKey)
 
 	resp, err := http.Get(url)
@@ -71,37 +47,30 @@ func GetLastfmData() {
 		log.Fatalln(err)
 	}
 
-	dstBody := &bytes.Buffer{}
-	if err := json.Indent(dstBody, body, "", "    "); err != nil {
-		panic(err)
-	}
-	//fmt.Println(dstBody.String())
-
-	fmt.Println("=== Unmarshaled content ===")
-	var result map[string]interface{}
 	json.Unmarshal(body, &result)
-	lfmr := result["recenttracks"].(map[string]interface{})
-	for key, val := range lfmr {
-		fmt.Println(key, val)
+	lfmr, ok := result["recenttracks"].(map[string]interface{})
+
+	// Atypical response or error
+	if !ok {
+		errorCode := result["error"].(float64)
+		errorMsg := result["message"].(string)
+		return data, fmt.Errorf("recieved err #%g: %s", errorCode, errorMsg)
 	}
 
-	fmt.Println("\n\n=== Individual values ===")
-	var attr = lfmr["@attr"].(map[string]interface{})
-	var track0 = lfmr["track"].([]interface{})[0].(map[string]interface{})
-	var trackName = track0["name"].(string)
-	var artist = track0["artist"].(map[string]interface{})["#text"].(string)
-	var album = track0["album"].(map[string]interface{})["#text"].(string)
+	// Set vars and return struct
+	attr := lfmr["@attr"].(map[string]interface{})
+	track0 := lfmr["track"].([]interface{})[0].(map[string]interface{})
+	albumArtArr := track0["image"].([]interface{}) //[0].(map[string]interface{})
 
-	var albumArtArr = track0["image"].([]interface{}) //[0].(map[string]interface{})
-	var albumArt string
+	data.User = attr["user"].(string)
+	data.Song = track0["name"].(string)
+	data.Artist = track0["artist"].(map[string]interface{})["#text"].(string)
+	data.Album = track0["album"].(map[string]interface{})["#text"].(string)
+
 	for _, s := range albumArtArr {
 		if s.(map[string]interface{})["size"].(string) == "large" {
-			albumArt = s.(map[string]interface{})["#text"].(string)
+			data.AlbumArt = s.(map[string]interface{})["#text"].(string)
 		}
 	}
-	fmt.Printf("     User: %s\n", attr["user"].(string))
-	fmt.Printf("     Song: %s\n", trackName)
-	fmt.Printf("   Artist: %s\n", artist)
-	fmt.Printf("    Album: %s\n", album)
-	fmt.Printf("Album Art: %s\n", albumArt)
+	return data, nil
 }
