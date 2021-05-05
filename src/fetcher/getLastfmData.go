@@ -18,9 +18,9 @@ type LastfmData struct {
 
 func SendTestResponse() string {
 	const data = `
-    <svg viewBox="0 0 440 120" xmlns="http://www.w3.org/2000/svg">
-        <style>#header{font:600 20px 'Segoe UI',Ubuntu,Sans-Serif;fill:#1e2e42}#song{font:500 18px 'Segoe UI',Ubuntu,Sans-Serif}#artist{font:400 18px 'Segoe UI',Ubuntu,Sans-Serif}#project{font:14px 'Segoe UI',Ubuntu,Sans-Serif;font-variant:small-caps;font-style:italic}</style>
-        <rect width="440" height="120" rx="5" fill="#fffefe" stroke="#e4e2e2" stroke-width="5"/>
+    <svg width="440" height="120" viewBox="0 0 440 120" xmlns="http://www.w3.org/2000/svg">
+        <style>#card{fill:#fffefe;stroke:#e4e2e2;stroke-width:5px;}#header{font:600 20px 'Segoe UI',Ubuntu,Sans-Serif;fill:#1e2e42}#song{font:500 18px 'Segoe UI',Ubuntu,Sans-Serif}#artist{font:400 18px 'Segoe UI',Ubuntu,Sans-Serif}#project{font:14px 'Segoe UI',Ubuntu,Sans-Serif;font-variant:small-caps;font-style:italic}</style>
+        <rect id="card" width="440" height="120" rx="5"/>
         <image href="https://lastfm.freetls.fastly.net/i/u/174s/478be8d73bdf783c89b709ebe7544180.jpg" width="120" height="120"/>
         <text id="header" x="135" y="35">Currently Listening To:</text>
         <text id="song" x="145" y="60">Primetime</text>
@@ -36,6 +36,7 @@ func GetLastfmData(user string, apiKey string) (LastfmData, error) {
 	var result map[string]interface{}
 	url := fmt.Sprintf("https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=%s&limit=1&api_key=%s&format=json", user, apiKey)
 
+	// Make request and format response
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatalln(err)
@@ -56,7 +57,7 @@ func GetLastfmData(user string, apiKey string) (LastfmData, error) {
 		return data, fmt.Errorf("recieved err #%g: %s", errorCode, errorMsg)
 	}
 
-	// Set vars and return struct
+	// Set values and return struct
 	attr := lfmr["@attr"].(map[string]interface{})
 	track0 := lfmr["track"].([]interface{})[0].(map[string]interface{})
 	albumArtArr := track0["image"].([]interface{}) //[0].(map[string]interface{})

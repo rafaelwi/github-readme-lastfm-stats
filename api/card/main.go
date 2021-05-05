@@ -1,28 +1,37 @@
 package main
 
 import (
+	"os"
+
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/rafaelwi/github-readme-lastfm-stats/src/fetcher"
+	"github.com/rafaelwi/github-readme-lastfm-stats/src/generator"
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	// Get user's name
-	res := "Hello github-readme-lastfm-stats "
-	if user, userOk := request.QueryStringParameters["user"]; userOk {
-		res += "User " + user
+	var res string
+
+	// Get username, get last.fm data, generate card. Return nothing at any time
+	// if a step fails.
+	user, userOk := request.QueryStringParameters["user"]
+	if userOk {
+		lastfmData, err := fetcher.GetLastfmData(user, os.Getenv("LASTFM_STATS_KEY"))
+		if err != nil {
+			res = ""
+		}
+		res = generator.GenerateCard(lastfmData)
 	} else {
-		res += "No user given"
+		res = ""
 	}
 
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
 		Headers:    map[string]string{"Content-Type": "image/svg+xml"},
-		Body:       fetcher.SendTestResponse(),
+		Body:       res,
 	}, nil
 }
 
 func main() {
-	// Make the handler available for Remote Procedure Call by AWS Lambda
 	lambda.Start(handler)
 }
