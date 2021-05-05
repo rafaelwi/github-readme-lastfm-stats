@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"strconv"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -11,11 +12,21 @@ import (
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	var res string
+	showScrobbles := false
 
 	// Get username, get last.fm data, generate card.
 	// Return nothing at any time if a step fails.
 	user, userOk := request.QueryStringParameters["user"]
 	theme, themeOk := request.QueryStringParameters["theme"]
+	showScrobblesParam, ssOk := request.QueryStringParameters["show_scrobbles"]
+
+	if ssOk {
+		var err error
+		showScrobbles, err = strconv.ParseBool(showScrobblesParam)
+		if err != nil {
+			showScrobbles = false
+		}
+	}
 
 	if !themeOk {
 		theme = "light"
@@ -26,7 +37,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		if err != nil {
 			res = ""
 		}
-		res = generator.GenerateCard(lastfmData, theme)
+		res = generator.GenerateCard(lastfmData, theme, showScrobbles)
 	} else {
 		res = ""
 	}

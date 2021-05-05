@@ -6,14 +6,18 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
+
+	"golang.org/x/text/language"
+	"golang.org/x/text/message"
 )
 
 type LastfmData struct {
-	User     string
-	Song     string
-	Artist   string
-	Album    string
-	AlbumArt string
+	Song      string
+	Artist    string
+	Album     string
+	AlbumArt  string
+	Scrobbles string
 }
 
 func SendTestResponse() string {
@@ -34,6 +38,7 @@ func SendTestResponse() string {
 func GetLastfmData(user string, apiKey string) (LastfmData, error) {
 	var data LastfmData
 	var result map[string]interface{}
+	data.AlbumArt = "https://lastfm.freetls.fastly.net/i/u/174s/4128a6eb29f94943c9d206c08e625904.webp" // Placeholder
 	url := fmt.Sprintf("https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=%s&limit=1&api_key=%s&format=json", user, apiKey)
 
 	// Make request and format response
@@ -62,7 +67,9 @@ func GetLastfmData(user string, apiKey string) (LastfmData, error) {
 	track0 := lfmr["track"].([]interface{})[0].(map[string]interface{})
 	albumArtArr := track0["image"].([]interface{}) //[0].(map[string]interface{})
 
-	data.User = attr["user"].(string)
+	// Get values
+	scrobbles, _ := strconv.Atoi(attr["total"].(string))
+	data.Scrobbles = message.NewPrinter(language.English).Sprintf("%d scrobbles", scrobbles)
 	data.Song = track0["name"].(string)
 	data.Artist = track0["artist"].(map[string]interface{})["#text"].(string)
 	data.Album = track0["album"].(map[string]interface{})["#text"].(string)
