@@ -79,5 +79,9 @@ func GetLastfmData(user string, apiKey string) (LastfmData, error) {
 			data.AlbumArt = s.(map[string]interface{})["#text"].(string)
 		}
 	}
+	if data.AlbumArt == "" {
+		data.AlbumArt = "https://lastfm.freetls.fastly.net/i/u/174s/4128a6eb29f94943c9d206c08e625904.webp"
+	}
+
 	return data, nil
 }
