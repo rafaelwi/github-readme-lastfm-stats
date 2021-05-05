@@ -12,15 +12,21 @@ import (
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	var res string
 
-	// Get username, get last.fm data, generate card. Return nothing at any time
-	// if a step fails.
+	// Get username, get last.fm data, generate card.
+	// Return nothing at any time if a step fails.
 	user, userOk := request.QueryStringParameters["user"]
+	theme, themeOk := request.QueryStringParameters["theme"]
+
+	if !themeOk {
+		theme = "light"
+	}
+
 	if userOk {
 		lastfmData, err := fetcher.GetLastfmData(user, os.Getenv("LASTFM_STATS_KEY"))
 		if err != nil {
 			res = ""
 		}
-		res = generator.GenerateCard(lastfmData)
+		res = generator.GenerateCard(lastfmData, theme)
 	} else {
 		res = ""
 	}

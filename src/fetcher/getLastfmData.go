@@ -19,7 +19,7 @@ type LastfmData struct {
 func SendTestResponse() string {
 	const data = `
     <svg width="440" height="120" viewBox="0 0 440 120" xmlns="http://www.w3.org/2000/svg">
-        <style>#card{fill:#fffefe;stroke:#e4e2e2;stroke-width:5px;}#header{font:600 20px 'Segoe UI',Ubuntu,Sans-Serif;fill:#1e2e42}#song{font:500 18px 'Segoe UI',Ubuntu,Sans-Serif}#artist{font:400 18px 'Segoe UI',Ubuntu,Sans-Serif}#project{font:14px 'Segoe UI',Ubuntu,Sans-Serif;font-variant:small-caps;font-style:italic}</style>
+        <style>#card{fill:#fff;stroke:#e1e4e8;stroke-width:5px}#header{font:600 20px 'Segoe UI',Ubuntu,Sans-Serif;fill:#0366d6}#song{font:500 18px 'Segoe UI',Ubuntu,Sans-Serif;fill:#586069}#artist{font:400 18px 'Segoe UI',Ubuntu,Sans-Serif;fill:#586069}#project{font:14px 'Segoe UI',Ubuntu,Sans-Serif;fill:#586069;font-variant:small-caps;font-style:italic}</style>
         <rect id="card" width="440" height="120" rx="5"/>
         <image href="https://lastfm.freetls.fastly.net/i/u/174s/478be8d73bdf783c89b709ebe7544180.jpg" width="120" height="120"/>
         <text id="header" x="135" y="35">Currently Listening To:</text>
