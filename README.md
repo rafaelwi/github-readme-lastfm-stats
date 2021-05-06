@@ -9,8 +9,8 @@ Dynamically generated last.fm stats in your profile readme
 - [Usage](#usage)
 - [Options](#options)
 - [Demo](#demo)
-- [Development & Deployment](#development-&-deployment)
-- [Issues, Requests, and Contributing](#issues,-requests,-and-contributing)
+- [Development & Deployment](#development--deployment)
+- [Issues, Requests, and Contributing](#issues-requests-and-contributing)
 
 <hr>
 
@@ -88,6 +88,6 @@ This also needs to be done on your deployment platform of choice. For Netlify, t
 
 ## Issues, Requests, and Contributing
 
-Found an issue or have a feature request? [Create a new one here](./issues/new) and I will take a look at it ASAP. Please give as much detail as possible in your commment.
+Found an issue or have a feature request? [Create a new one here](https://github.com/rafaelwi/github-readme-lastfm-stats/issues/new) and I will take a look at it ASAP. Please give as much detail as possible in your commment.
 
 Like the project and want to lend a hand? Just make a pull request and I'll take a look.
