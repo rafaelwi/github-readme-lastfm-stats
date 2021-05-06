@@ -60,7 +60,7 @@ func main() {
 			usage += "&show_scrobbles=true"
 		}
 
-		fmt.Printf("```%s```\n\n", usage)
+		fmt.Printf("```\n%s\n```\n\n", usage)
 		fmt.Printf("![%s](%s)<hr>\n\n", filename, "./docs/"+filename)
 	}
 }
