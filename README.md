@@ -9,8 +9,7 @@
 https://github-readme-lastfm-stats.netlify.app/.netlify/functions/card?user=st-silver
 ```
 
-<img src="./docs/card/light-noScrobbles.svg"/>
-<hr>
+![card/light-noScrobbles.svg](./docs/card/light-noScrobbles.svg)<hr>
 
 ```
 https://github-readme-lastfm-stats.netlify.app/.netlify/functions/card?user=st-silver&theme=dimmed

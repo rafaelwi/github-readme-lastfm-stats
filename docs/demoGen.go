@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/rafaelwi/github-readme-lastfm-stats/src/fetcher"
@@ -28,7 +29,7 @@ func main() {
 		numScrobbles}
 	m[key{"light", true}] = m[key{"light", false}]
 	m[key{"dimmed", true}] = m[key{"dimmed", false}]
-	m[key{"dark", true}] = m[key{"dimmed", false}]
+	m[key{"dark", true}] = m[key{"dark", false}]
 
 	scrob := make(map[bool]string)
 	scrob[true] = "scrobbles"
@@ -40,15 +41,13 @@ func main() {
 
 		f, err := os.Create(filename)
 		if err != nil {
-			fmt.Println(err)
-			return
+			log.Fatal(err)
 		}
 
 		f.WriteString(s)
 		err = f.Close()
 		if err != nil {
-			fmt.Println(err)
-			return
+			log.Fatal(err)
 		}
 
 		usage := "https://github-readme-lastfm-stats.netlify.app/.netlify/functions/card?user=st-silver"

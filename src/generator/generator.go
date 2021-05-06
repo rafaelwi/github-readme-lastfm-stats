@@ -1,6 +1,10 @@
 package generator
 
 import (
+	"encoding/base64"
+	"io/ioutil"
+	"log"
+	"net/http"
 	"strings"
 
 	"github.com/rafaelwi/github-readme-lastfm-stats/src/fetcher"
@@ -34,8 +38,10 @@ func generateCardStyle(style string) string {
 
 // TODO: In the future I may need to add various flags for setting specific aspects of the cards
 func generateCardBody(data fetcher.LastfmData, showScrobbles bool) string {
+	base64Art := encodeImage(data.AlbumArt)
+
 	body := "<rect id=\"card\" width=\"440\" height=\"120\" rx=\"5\"/>" +
-		"<image href=\"" + data.AlbumArt + "\" width=\"120\" height=\"120\"/>" +
+		"<image xlink:href=\"" + base64Art + "\" width=\"120\" height=\"120\"/>" +
 		"<text id=\"header\" x=\"135\" y=\"35\">Currently Listening To:</text>" +
 		"<text id=\"song\" x=\"145\" y=\"55\">" + data.Song + "</text>" +
 		"<text id=\"artist\" x=\"145\" y=\"75\">" + data.Artist + "</text>"
@@ -49,9 +55,30 @@ func generateCardBody(data fetcher.LastfmData, showScrobbles bool) string {
 }
 
 func generateCardTop() string {
-	return `<svg width="440" height="120" viewBox="0 0 440 120" xmlns="http://www.w3.org/2000/svg">`
+	return `<svg width="440" height="120" viewBox="0 0 440 120" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">`
 }
 
 func generateCardBottom() string {
 	return `</svg>`
+}
+
+func toBase64(b []byte) string {
+	return base64.StdEncoding.EncodeToString(b)
+}
+
+func encodeImage(url string) string {
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer resp.Body.Close()
+	bytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	base64 := "data:" + http.DetectContentType(bytes) + ";base64,"
+	base64 += toBase64(bytes)
+	return base64
 }
